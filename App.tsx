@@ -1,4 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
 import { AccentColorPicker } from './components/AccentColorPicker';
 import { CoverLetterGenerator } from './components/CoverLetterGenerator';
@@ -37,9 +39,11 @@ const App: React.FC = () => {
   });
 
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
+  const [isDownloading, setIsDownloading] = useState<boolean>(false);
   const [template, setTemplate] = useState<TemplateName>('modern');
   const [accentColor, setAccentColor] = useState<string>('#4f46e5');
   const [activeTab, setActiveTab] = useState<ActiveTab>('resume');
+  const previewRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     localStorage.setItem('resumeData', JSON.stringify(resumeData));
@@ -78,8 +82,42 @@ const App: React.FC = () => {
     }
   }, [resumeData]);
 
-  const handlePrint = () => {
-    window.print();
+  const handleDownloadPdf = async () => {
+    const elementToCapture = previewRef.current;
+    if (!elementToCapture) {
+        toast.error("Preview element not found.");
+        return;
+    }
+
+    setIsDownloading(true);
+    toast.loading('Preparing your PDF...', { id: 'pdf-download' });
+
+    try {
+        const canvas = await html2canvas(elementToCapture, {
+            scale: 3, // High resolution capture
+            useCORS: true,
+            logging: false,
+        });
+
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF({
+            orientation: 'portrait',
+            unit: 'mm',
+            format: 'a4'
+        });
+
+        // Add the image to the PDF, fitting it to the A4 page
+        pdf.addImage(imgData, 'PNG', 0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight());
+        
+        pdf.save(`${resumeData.fullName.replace(/\s/g, '_')}_Resume.pdf`);
+
+        toast.success('Downloaded successfully!', { id: 'pdf-download' });
+    } catch (error) {
+        console.error("Failed to generate PDF", error);
+        toast.error('Could not generate PDF. Please try again.', { id: 'pdf-download' });
+    } finally {
+        setIsDownloading(false);
+    }
   };
 
   const TabButton: React.FC<{tab: ActiveTab, children: React.ReactNode}> = ({ tab, children }) => (
@@ -100,9 +138,9 @@ const App: React.FC = () => {
       <Toaster position="top-center" reverseOrder={false} />
       <div className="flex flex-col h-screen font-sans text-slate-800">
         <Header />
-        <main className="flex-grow grid grid-cols-1 lg:grid-cols-5 xl:grid-cols-3 gap-4 p-4 overflow-hidden">
+        <main className="flex-grow grid grid-cols-1 lg:grid-cols-5 gap-4 p-4 overflow-hidden">
           {/* Left Panel: Controls */}
-          <div className="lg:col-span-2 xl:col-span-1 bg-white rounded-lg shadow-lg flex flex-col h-full overflow-hidden printable-hidden">
+          <div className="lg:col-span-2 bg-white rounded-lg shadow-lg flex flex-col h-full overflow-hidden printable-hidden">
              <div className="p-4 border-b border-slate-200">
                 <TemplateSelector current={template} onSelect={setTemplate} />
                 <AccentColorPicker currentColor={accentColor} onSelect={setAccentColor} />
@@ -129,16 +167,24 @@ const App: React.FC = () => {
           </div>
           
           {/* Right Panel: Preview */}
-          <div className="lg:col-span-3 xl:col-span-2 flex flex-col h-full overflow-hidden" id="resume-preview-wrapper">
+          <div className="lg:col-span-3 flex flex-col h-full overflow-hidden" id="resume-preview-wrapper">
             <div className="flex-shrink-0 flex justify-between items-center bg-white p-3 rounded-t-lg shadow-md printable-hidden">
-              <h2 className="text-xl font-bold text-slate-700">Live Preview</h2>
-              <button onClick={handlePrint} className="flex items-center space-x-2 px-4 py-2 bg-white border border-slate-300 rounded-md shadow-sm text-sm font-medium text-slate-700 hover:bg-slate-100 transition-colors">
-                  <DownloadIcon className="w-4 h-4" />
-                  <span>Download as PDF</span>
+              <h2 className="text-lg md:text-xl font-bold text-slate-700">Live Preview</h2>
+              <button 
+                onClick={handleDownloadPdf} 
+                disabled={isDownloading}
+                className="flex items-center space-x-2 px-4 py-2 bg-white border border-slate-300 rounded-md shadow-sm text-sm font-medium text-slate-700 hover:bg-slate-100 disabled:bg-slate-100 disabled:cursor-wait transition-colors"
+              >
+                  {isDownloading ? (
+                     <div className="w-4 h-4 border-2 border-slate-400 border-t-transparent rounded-full animate-spin"></div>
+                  ) : (
+                     <DownloadIcon className="w-4 h-4" />
+                  )}
+                  <span className='hidden sm:inline'>{isDownloading ? 'Downloading...' : 'Download as PDF'}</span>
               </button>
             </div>
-            <div className="flex-grow bg-slate-200 p-4 lg:p-8 overflow-y-auto custom-scrollbar resume-preview-content">
-                <div className="max-w-[210mm] mx-auto">
+            <div className="flex-grow bg-slate-200 p-2 sm:p-4 lg:p-8 overflow-y-auto custom-scrollbar resume-preview-content">
+                <div ref={previewRef} className="w-full max-w-[210mm] mx-auto">
                     <ResumePreview data={resumeData} template={template} accentColor={accentColor} />
                 </div>
             </div>

@@ -23,13 +23,13 @@ export const Header: React.FC = () => {
     return (
         <header className="bg-white shadow-md printable-hidden flex-shrink-0">
             <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-                <div className="flex items-center space-x-3">
-                    <FileTextIcon className="w-8 h-8 text-accent" />
-                    <h1 className="text-2xl font-bold text-slate-800">AI Resume Studio</h1>
+                <div className="flex items-center space-x-2 sm:space-x-3">
+                    <FileTextIcon className="w-7 h-7 sm:w-8 sm:h-8 text-accent" />
+                    <h1 className="text-xl sm:text-2xl font-bold text-slate-800">AI Resume Studio</h1>
                 </div>
                 <div className="flex items-center space-x-2 text-accent">
                     <SparklesIcon className="w-5 h-5" />
-                    <span className="font-semibold">Powered by Gemini</span>
+                    <span className="font-semibold text-sm sm:text-base">Powered by Gemini</span>
                 </div>
             </div>
         </header>

@@ -13,7 +13,15 @@
       body {
         --accent-color: #4f46e5; /* Default accent color */
       }
+      @page {
+        size: A4;
+        margin: 0;
+      }
       @media print {
+        html, body {
+            width: 210mm;
+            height: 297mm;
+        }
         body {
           -webkit-print-color-adjust: exact;
           print-color-adjust: exact;
@@ -22,21 +30,25 @@
           display: none !important;
         }
         #resume-preview-wrapper {
-          position: absolute;
+          position: fixed;
           top: 0;
           left: 0;
           width: 100%;
           height: 100%;
           margin: 0 !important;
           padding: 0 !important;
-          overflow: visible;
+          overflow: hidden;
+          background: white !important;
         }
         .resume-preview-content {
            box-shadow: none !important;
            border: none !important;
-           margin: 0;
-           padding: 0;
+           margin: 0 !important;
+           padding: 0 !important;
            border-radius: 0;
+        }
+        .resume-preview-content > div {
+            margin: 0 auto !important;
         }
       }
       /* Custom scrollbar for webkit browsers */
@@ -78,11 +90,12 @@
     "react-dom/": "https://esm.sh/react-dom@^19.1.1/",
     "react/": "https://esm.sh/react@^19.1.1/",
     "react": "https://esm.sh/react@^19.1.1",
-    "react-hot-toast": "https://esm.sh/react-hot-toast@^2.5.2"
+    "react-hot-toast": "https://esm.sh/react-hot-toast@^2.5.2",
+    "jspdf": "https://esm.sh/jspdf@^2.5.1",
+    "html2canvas": "https://esm.sh/html2canvas@^1.4.1"
   }
 }
 </script>
-<link rel="stylesheet" href="/index.css">
 </head>
   <body class="bg-slate-100">
     <div id="root"></div>

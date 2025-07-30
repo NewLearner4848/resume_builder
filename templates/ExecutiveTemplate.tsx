@@ -21,14 +21,14 @@ const renderDescription = (description: string) => {
 
 const MainSection: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
     <section className="mb-6">
-        <h2 className="font-serif text-2xl font-bold text-slate-800 border-b-2 border-slate-200 pb-2 mb-3">{title}</h2>
+        <h2 className="font-serif text-xl md:text-2xl font-bold text-slate-800 border-b-2 border-slate-200 pb-2 mb-3">{title}</h2>
         {children}
     </section>
 );
 
 const SidebarSection: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
      <section className="mb-6">
-        <h3 className="font-serif text-lg font-bold text-[--accent-color] uppercase tracking-wider">{title}</h3>
+        <h3 className="font-serif text-md md:text-lg font-bold text-[--accent-color] uppercase tracking-wider">{title}</h3>
         <div className="w-1/4 border-b-2 border-[--accent-color] my-2"></div>
         {children}
     </section>
@@ -39,40 +39,40 @@ export const ExecutiveTemplate: React.FC<TemplateProps> = ({ data, accentColor }
   
   return (
     <div className="bg-white shadow-2xl rounded-lg border border-slate-200 font-sans" style={{ '--accent-color': accentColor } as React.CSSProperties}>
-        <header className="p-8 lg:p-10 bg-slate-50 border-b-4 border-[--accent-color] rounded-t-lg">
-            <h1 className="font-serif text-5xl font-bold text-slate-800 tracking-tight">{fullName}</h1>
-            <h2 className="font-sans text-xl text-slate-600 font-medium mt-1">{workExperience[0]?.jobTitle}</h2>
+        <header className="p-6 md:p-8 lg:p-10 bg-slate-50 border-b-4 border-[--accent-color] rounded-t-lg">
+            <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-slate-800 tracking-tight">{fullName}</h1>
+            <h2 className="font-sans text-lg md:text-xl text-slate-600 font-medium mt-1">{workExperience[0]?.jobTitle}</h2>
         </header>
         <div className="flex flex-col md:flex-row">
              {/* Main Content */}
-            <main className="w-full md:w-2/3 p-8 lg:p-10">
+            <main className="w-full md:w-2/3 p-6 md:p-8 lg:p-10">
                 <MainSection title="Summary">
-                    <p className="text-slate-700 leading-relaxed">{professionalSummary}</p>
+                    <p className="text-slate-700 leading-relaxed text-sm sm:text-base">{professionalSummary}</p>
                 </MainSection>
                 {workExperience && workExperience.length > 0 && (
                 <MainSection title="Experience">
                     {workExperience.map(exp => (
                     <div key={exp.id} className="mb-5 last:mb-0">
-                        <div className="flex justify-between items-baseline">
-                        <h3 className="text-lg font-bold text-slate-800">{exp.jobTitle}</h3>
-                        <p className="text-sm font-medium text-slate-500">{exp.startDate} - {exp.endDate}</p>
+                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline">
+                        <h3 className="text-md md:text-lg font-bold text-slate-800">{exp.jobTitle}</h3>
+                        <p className="text-xs sm:text-sm font-medium text-slate-500">{exp.startDate} - {exp.endDate}</p>
                         </div>
-                        <h4 className="text-md font-semibold text-slate-600 mb-2">{exp.company}</h4>
-                        <ul className="pl-4 text-sm space-y-1 list-disc list-outside">{renderDescription(exp.description)}</ul>
+                        <h4 className="text-sm md:text-md font-semibold text-slate-600 mb-2">{exp.company}</h4>
+                        <ul className="pl-4 text-sm sm:text-base space-y-1 list-disc list-outside">{renderDescription(exp.description)}</ul>
                     </div>
                     ))}
                 </MainSection>
                 )}
             </main>
              {/* Sidebar */}
-            <aside className="w-full md:w-1/3 p-8 lg:p-10 bg-slate-50 border-t-2 md:border-t-0 md:border-l-2 border-slate-200">
+            <aside className="w-full md:w-1/3 p-6 md:p-8 lg:p-10 bg-slate-50 border-t-2 md:border-t-0 md:border-l-2 border-slate-200">
                 <SidebarSection title="Contact">
                     <div className="space-y-3 text-sm">
-                        <a href={`mailto:${email}`} className="flex items-center gap-3 text-slate-800 hover:text-[--accent-color]"><MailIcon/> <span>{email}</span></a>
-                        <a href={`tel:${phoneNumber}`} className="flex items-center gap-3 text-slate-800 hover:text-[--accent-color]"><PhoneIcon/> <span>{phoneNumber}</span></a>
-                        {website && <a href={`https://${website}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-slate-800 hover:text-[--accent-color]"><LinkIcon/> <span>{website}</span></a>}
-                        {linkedIn && <a href={`https://${linkedIn}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-slate-800 hover:text-[--accent-color]"><LinkedInIcon/> <span>{linkedIn}</span></a>}
-                        {github && <a href={`https://${github}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-slate-800 hover:text-[--accent-color]"><GithubIcon/> <span>{github}</span></a>}
+                        <a href={`mailto:${email}`} className="flex items-center gap-3 text-slate-800 hover:text-[--accent-color]"><MailIcon/> <span className="break-all">{email}</span></a>
+                        <a href={`tel:${phoneNumber}`} className="flex items-center gap-3 text-slate-800 hover:text-[--accent-color]"><PhoneIcon/> <span className="break-all">{phoneNumber}</span></a>
+                        {website && <a href={`https://${website}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-slate-800 hover:text-[--accent-color]"><LinkIcon/> <span className="break-all">{website}</span></a>}
+                        {linkedIn && <a href={`https://${linkedIn}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-slate-800 hover:text-[--accent-color]"><LinkedInIcon/> <span className="break-all">{linkedIn}</span></a>}
+                        {github && <a href={`https://${github}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-slate-800 hover:text-[--accent-color]"><GithubIcon/> <span className="break-all">{github}</span></a>}
                     </div>
                 </SidebarSection>
                  {skills && skills.length > 0 && (

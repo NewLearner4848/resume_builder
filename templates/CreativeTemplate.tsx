@@ -29,14 +29,14 @@ export const CreativeTemplate: React.FC<TemplateProps> = ({ data, accentColor })
   const accentColorLight = `${accentColor}20`;
   
   return (
-    <div className="bg-white shadow-2xl rounded-lg border border-slate-200 font-sans p-8 lg:p-12" style={{ '--accent-color': accentColor, '--accent-color-light': accentColorLight } as React.CSSProperties}>
+    <div className="bg-white shadow-2xl rounded-lg border border-slate-200 font-sans p-6 md:p-8 lg:p-12" style={{ '--accent-color': accentColor, '--accent-color-light': accentColorLight } as React.CSSProperties}>
         <header className="text-center">
-            <div className="w-24 h-24 rounded-full bg-[--accent-color-light] mx-auto flex items-center justify-center">
-                <span className="text-4xl font-bold text-[--accent-color]">{fullName.charAt(0)}</span>
+            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-[--accent-color-light] mx-auto flex items-center justify-center">
+                <span className="text-3xl sm:text-4xl font-bold text-[--accent-color]">{fullName.charAt(0)}</span>
             </div>
-            <h1 className="text-4xl font-bold text-slate-800 tracking-tight mt-4">{fullName}</h1>
-            <h2 className="text-lg text-slate-500 font-medium mt-1">{workExperience[0]?.jobTitle}</h2>
-            <div className="mt-4 flex justify-center items-center flex-wrap gap-x-6 gap-y-2 text-sm text-slate-600">
+            <h1 className="text-3xl sm:text-4xl font-bold text-slate-800 tracking-tight mt-4">{fullName}</h1>
+            <h2 className="text-md sm:text-lg text-slate-500 font-medium mt-1">{workExperience[0]?.jobTitle}</h2>
+            <div className="mt-4 flex justify-center items-center flex-wrap flex-col sm:flex-row gap-x-6 gap-y-2 text-xs sm:text-sm text-slate-600">
                 <a href={`mailto:${email}`} className="flex items-center gap-2 hover:text-[--accent-color]"><MailIcon/> {email}</a>
                 <a href={`tel:${phoneNumber}`} className="flex items-center gap-2 hover:text-[--accent-color]"><PhoneIcon/> {phoneNumber}</a>
                 {website && <a href={`https://${website}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-[--accent-color]"><LinkIcon/> {website}</a>}
@@ -45,14 +45,14 @@ export const CreativeTemplate: React.FC<TemplateProps> = ({ data, accentColor })
         
         <main>
             <Section title="About Me">
-                <p className="text-slate-700 leading-relaxed text-center max-w-2xl mx-auto">{professionalSummary}</p>
+                <p className="text-slate-700 leading-relaxed text-center max-w-2xl mx-auto text-sm sm:text-base">{professionalSummary}</p>
             </Section>
 
             {skills && skills.length > 0 && (
                 <Section title="Skills">
-                    <div className="flex flex-wrap gap-3 justify-center">
+                    <div className="flex flex-wrap gap-2 sm:gap-3 justify-center">
                     {skills.map((skill, index) => (
-                        <span key={index} className="bg-slate-100 text-slate-700 text-sm font-medium px-4 py-2 rounded-full">{skill}</span>
+                        <span key={index} className="bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium px-3 py-2 sm:px-4 rounded-full">{skill}</span>
                     ))}
                     </div>
                 </Section>
@@ -64,9 +64,9 @@ export const CreativeTemplate: React.FC<TemplateProps> = ({ data, accentColor })
                         {workExperience.map(exp => (
                             <div key={exp.id} className="mb-8 last:mb-0 pl-8 relative">
                                 <div className="absolute -left-[11px] top-1 w-5 h-5 bg-white border-2 border-[--accent-color] rounded-full"></div>
-                                <p className="text-sm font-medium text-slate-500">{exp.startDate} - {exp.endDate}</p>
-                                <h3 className="text-lg font-bold text-slate-800 mt-1">{exp.jobTitle}</h3>
-                                <h4 className="text-md font-semibold text-slate-600 mb-2">{exp.company}</h4>
+                                <p className="text-xs sm:text-sm font-medium text-slate-500">{exp.startDate} - {exp.endDate}</p>
+                                <h3 className="text-md sm:text-lg font-bold text-slate-800 mt-1">{exp.jobTitle}</h3>
+                                <h4 className="text-sm sm:text-md font-semibold text-slate-600 mb-2">{exp.company}</h4>
                                 <ul className="text-sm space-y-1 list-disc list-outside ml-4">{renderDescription(exp.description)}</ul>
                             </div>
                         ))}
@@ -78,8 +78,8 @@ export const CreativeTemplate: React.FC<TemplateProps> = ({ data, accentColor })
                 <Section title="Education">
                     {education.map(edu => (
                         <div key={edu.id} className="text-center mb-2 last:mb-0">
-                            <h3 className="text-lg font-bold text-slate-800">{edu.degree}</h3>
-                            <p className="text-md text-slate-600">{edu.school} &middot; {edu.gradDate}</p>
+                            <h3 className="text-md sm:text-lg font-bold text-slate-800">{edu.degree}</h3>
+                            <p className="text-sm sm:text-md text-slate-600">{edu.school} &middot; {edu.gradDate}</p>
                         </div>
                     ))}
                 </Section>
