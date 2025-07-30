@@ -1,0 +1,6 @@
+{
+  "name": "Resume Builder",
+  "description": "An AI-powered application that helps users create professional and impactful resumes by enhancing their provided information with Gemini.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}
