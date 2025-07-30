@@ -39,7 +39,7 @@ export const ModernTemplate: React.FC<TemplateProps> = ({ data, accentColor }) =
   const accentColorLight = `${accentColor}20`;
   
   return (
-    <div className="bg-white shadow-2xl rounded-lg border border-slate-200 font-sans flex flex-col md:flex-row min-h-[29.7cm]" style={{ '--accent-color': accentColor, '--accent-color-light': accentColorLight } as React.CSSProperties}>
+    <div className="w-[210mm] min-h-[297mm] bg-white shadow-2xl rounded-lg border border-slate-200 font-sans flex flex-col md:flex-row" style={{ '--accent-color': accentColor, '--accent-color-light': accentColorLight } as React.CSSProperties}>
       {/* Left Sidebar */}
       <aside className="w-full md:w-1/3 bg-slate-50 p-4 sm:p-6 text-slate-800 md:border-r border-slate-200">
         <div className="md:sticky md:top-6">

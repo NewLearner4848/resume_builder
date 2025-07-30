@@ -43,7 +43,7 @@ export const ClassicTemplate: React.FC<TemplateProps> = ({ data, accentColor }) 
   };
   
   return (
-    <div className="bg-white p-6 md:p-8 lg:p-12 shadow-2xl rounded-lg border border-slate-200 font-serif" style={{ '--accent-color': accentColor } as React.CSSProperties}>
+    <div className="w-[210mm] min-h-[297mm] bg-white p-6 md:p-8 lg:p-12 shadow-2xl rounded-lg border border-slate-200 font-serif" style={{ '--accent-color': accentColor } as React.CSSProperties}>
       <header className="text-center mb-6 md:mb-8">
         <h1 className="text-3xl sm:text-4xl font-bold text-slate-800 tracking-tight">{fullName}</h1>
         <div className="mt-3 flex justify-center items-center flex-wrap gap-x-2 sm:gap-x-4 gap-y-2 text-xs sm:text-sm">

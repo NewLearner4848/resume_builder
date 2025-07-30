@@ -27,9 +27,4 @@ export interface ResumeData {
   education: Education[];
 }
 
-export interface EnhancedResumeData {
-    professionalSummary: string;
-    workExperience: { description: string }[];
-}
-
 export type TemplateName = 'classic' | 'modern' | 'executive' | 'creative' | 'minimalist';

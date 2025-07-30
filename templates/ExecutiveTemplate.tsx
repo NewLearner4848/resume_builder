@@ -38,7 +38,7 @@ export const ExecutiveTemplate: React.FC<TemplateProps> = ({ data, accentColor }
   const { fullName, email, phoneNumber, linkedIn, github, website, professionalSummary, skills, workExperience, education } = data;
   
   return (
-    <div className="bg-white shadow-2xl rounded-lg border border-slate-200 font-sans" style={{ '--accent-color': accentColor } as React.CSSProperties}>
+    <div className="w-[210mm] min-h-[297mm] bg-white shadow-2xl rounded-lg border border-slate-200 font-sans" style={{ '--accent-color': accentColor } as React.CSSProperties}>
         <header className="p-6 md:p-8 lg:p-10 bg-slate-50 border-b-4 border-[--accent-color] rounded-t-lg">
             <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-slate-800 tracking-tight">{fullName}</h1>
             <h2 className="font-sans text-lg md:text-xl text-slate-600 font-medium mt-1">{workExperience[0]?.jobTitle}</h2>

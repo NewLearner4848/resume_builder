@@ -24,7 +24,7 @@ export const MinimalistTemplate: React.FC<TemplateProps> = ({ data, accentColor 
   const { fullName, email, phoneNumber, linkedIn, github, website, professionalSummary, skills, workExperience, education } = data;
   
   return (
-    <div className="bg-white shadow-2xl rounded-lg border border-slate-200 font-sans p-6 sm:p-10 lg:p-14" style={{ '--accent-color': accentColor } as React.CSSProperties}>
+    <div className="w-[210mm] min-h-[297mm] bg-white shadow-2xl rounded-lg border border-slate-200 font-sans p-6 sm:p-10 lg:p-14" style={{ '--accent-color': accentColor } as React.CSSProperties}>
         <header className="text-left mb-8 sm:mb-10">
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-800 tracking-tight">{fullName}</h1>
             <div className="w-16 border-b-2 my-4" style={{ borderColor: accentColor }}></div>

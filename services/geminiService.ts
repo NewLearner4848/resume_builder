@@ -1,53 +1,31 @@
 import { GoogleGenAI, Type } from "@google/genai";
-import type { EnhancedResumeData, ResumeData } from '../types';
+import type { ResumeData } from '../types';
 
 const API_KEY = "AIzaSyBzEdolaY1CwQ3kMp5fPjPrI7MZ0fam0i4";
 
-const responseSchema = {
-    type: Type.OBJECT,
-    properties: {
-        professionalSummary: {
-            type: Type.STRING,
-            description: "An enhanced, professional summary (3-5 sentences).",
-        },
-        workExperience: {
-            type: Type.ARRAY,
-            description: "An array of enhanced work experience descriptions.",
-            items: {
-                type: Type.OBJECT,
-                properties: {
-                    description: {
-                        type: Type.STRING,
-                        description: "An enhanced, achievement-oriented description for a single job, using bullet points starting with strong action verbs.",
-                    },
-                },
-                required: ['description'],
-            },
-        },
-    },
-    required: ['professionalSummary', 'workExperience'],
-};
-
-
-export const enhanceResume = async (data: ResumeData): Promise<EnhancedResumeData> => {
+export const enhanceTextSection = async (originalText: string, userGuidance: string, sectionType: string): Promise<string> => {
     const prompt = `
-    You are a world-class professional resume writer and career coach.
-    Your task is to rewrite and enhance the provided resume content to be more professional, impactful, and ATS-friendly.
-    Use strong action verbs, quantify achievements where possible, and adopt a professional tone.
-    The output must be a JSON object matching the provided schema.
+    You are a world-class professional resume writer. Your task is to rewrite and enhance a specific section of a resume based on user guidance.
+    Adopt a professional tone, use strong action verbs, and quantify achievements where possible.
+    Focus on making the text impactful and ATS-friendly.
 
-    Here is the user's current resume information:
-    - Professional Summary: "${data.professionalSummary}"
-    - Work Experience:
-      ${data.workExperience.map((exp, i) => `
-        - Job ${i+1}: ${exp.jobTitle} at ${exp.company}
-        - Current Description ${i+1}: "${exp.description}"
-      `).join('')}
+    - Section Type: "${sectionType}"
+    - Original Text: "${originalText}"
+    - User Guidance: "${userGuidance || 'No specific guidance provided. General improvements.'}"
 
-    Rewrite the professional summary and each work experience description based on this data.
-    For work experience descriptions, transform the notes into concise, powerful bullet points starting with action verbs.
-    For example, "I worked on a project to improve performance" should become "- Spearheaded a performance optimization initiative, resulting in a 25% reduction in page load times."
+    Rewrite the text based on these details. The output must be a JSON object with a single key "enhancedText".
     `;
+
+    const responseSchema = {
+        type: Type.OBJECT,
+        properties: {
+            enhancedText: {
+                type: Type.STRING,
+                description: `The enhanced text for the ${sectionType} section.`
+            }
+        },
+        required: ['enhancedText']
+    };
 
     try {
         const ai = new GoogleGenAI({ apiKey: API_KEY });
@@ -63,16 +41,21 @@ export const enhanceResume = async (data: ResumeData): Promise<EnhancedResumeDat
         const jsonText = response.text.trim();
         const parsedData = JSON.parse(jsonText);
         
-        return parsedData as EnhancedResumeData;
+        if (typeof parsedData.enhancedText === 'string') {
+            return parsedData.enhancedText;
+        } else {
+            throw new Error("Invalid response format from API.");
+        }
 
     } catch (error) {
         console.error("Error calling Gemini API:", error);
         if (error instanceof Error && (error.message.includes('API_KEY') || error.message.toLowerCase().includes('api key'))) {
              throw new Error("API Key not configured. Please ensure the API_KEY environment variable is set.");
         }
-        throw new Error("Failed to generate content from Gemini API.");
+        throw new Error("Failed to generate suggestion from Gemini API.");
     }
 };
+
 
 export const generateCoverLetter = async (data: ResumeData, jobDescription: string): Promise<string> => {
     const prompt = `

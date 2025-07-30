@@ -29,7 +29,7 @@ export const CreativeTemplate: React.FC<TemplateProps> = ({ data, accentColor })
   const accentColorLight = `${accentColor}20`;
   
   return (
-    <div className="bg-white shadow-2xl rounded-lg border border-slate-200 font-sans p-6 md:p-8 lg:p-12" style={{ '--accent-color': accentColor, '--accent-color-light': accentColorLight } as React.CSSProperties}>
+    <div className="w-[210mm] min-h-[297mm] bg-white shadow-2xl rounded-lg border border-slate-200 font-sans p-6 md:p-8 lg:p-12" style={{ '--accent-color': accentColor, '--accent-color-light': accentColorLight } as React.CSSProperties}>
         <header className="text-center">
             <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-[--accent-color-light] mx-auto flex items-center justify-center">
                 <span className="text-3xl sm:text-4xl font-bold text-[--accent-color]">{fullName.charAt(0)}</span>
