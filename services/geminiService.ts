@@ -1,12 +1,7 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import type { EnhancedResumeData, ResumeData } from '../types';
 
-if (!process.env.API_KEY) {
-    throw new Error("API_KEY environment variable not set");
-}
-
-
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const API_KEY = "AIzaSyBzEdolaY1CwQ3kMp5fPjPrI7MZ0fam0i4";
 
 const responseSchema = {
     type: Type.OBJECT,
@@ -55,6 +50,7 @@ export const enhanceResume = async (data: ResumeData): Promise<EnhancedResumeDat
     `;
 
     try {
+        const ai = new GoogleGenAI({ apiKey: API_KEY });
         const response = await ai.models.generateContent({
             model: "gemini-2.5-flash",
             contents: prompt,
@@ -71,6 +67,9 @@ export const enhanceResume = async (data: ResumeData): Promise<EnhancedResumeDat
 
     } catch (error) {
         console.error("Error calling Gemini API:", error);
+        if (error instanceof Error && (error.message.includes('API_KEY') || error.message.toLowerCase().includes('api key'))) {
+             throw new Error("API Key not configured. Please ensure the API_KEY environment variable is set.");
+        }
         throw new Error("Failed to generate content from Gemini API.");
     }
 };
@@ -97,6 +96,7 @@ The output should be plain text, with professional formatting (e.g., paragraphs,
 `;
 
     try {
+        const ai = new GoogleGenAI({ apiKey: API_KEY });
         const response = await ai.models.generateContent({
             model: "gemini-2.5-flash",
             contents: prompt,
@@ -105,6 +105,9 @@ The output should be plain text, with professional formatting (e.g., paragraphs,
         return response.text;
     } catch (error) {
         console.error("Error calling Gemini API for cover letter:", error);
+        if (error instanceof Error && (error.message.includes('API_KEY') || error.message.toLowerCase().includes('api key'))) {
+             throw new Error("API Key not configured. Please ensure the API_KEY environment variable is set.");
+        }
         throw new Error("Failed to generate cover letter from Gemini API.");
     }
 }

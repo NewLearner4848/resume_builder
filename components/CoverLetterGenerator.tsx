@@ -39,8 +39,9 @@ export const CoverLetterGenerator: React.FC<CoverLetterGeneratorProps> = ({ resu
             setGeneratedLetter(letter);
             toast.success('Cover letter generated!', { id: 'cover-letter' });
         } catch (error) {
-            console.error(error);
-            toast.error('Failed to generate cover letter.', { id: 'cover-letter' });
+            console.error("Failed to generate cover letter:", error);
+            const message = error instanceof Error ? error.message : 'Failed to generate cover letter.';
+            toast.error(message, { id: 'cover-letter' });
         } finally {
             setIsGenerating(false);
         }

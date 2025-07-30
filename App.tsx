@@ -1,14 +1,14 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { ResumeForm } from './components/ResumeForm';
-import { ResumePreview } from './components/ResumePreview';
-import type { ResumeData, TemplateName } from './types';
-import { INITIAL_RESUME_DATA } from './constants';
-import { enhanceResume } from './services/geminiService';
-import { Header } from './components/Header';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
-import { TemplateSelector } from './components/TemplateSelector';
 import { AccentColorPicker } from './components/AccentColorPicker';
 import { CoverLetterGenerator } from './components/CoverLetterGenerator';
+import { Header } from './components/Header';
+import { ResumeForm } from './components/ResumeForm';
+import { ResumePreview } from './components/ResumePreview';
+import { TemplateSelector } from './components/TemplateSelector';
+import { INITIAL_RESUME_DATA } from './constants';
+import { enhanceResume } from './services/geminiService';
+import type { ResumeData, TemplateName } from './types';
 
 const DownloadIcon: React.FC<{className?: string}> = ({ className }) => (
     <svg xmlns="http://www.w3.org/2000/svg" className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -71,7 +71,8 @@ const App: React.FC = () => {
       toast.success('Resume enhanced successfully!', { id: 'enhancing' });
     } catch (error) {
       console.error("Failed to enhance resume:", error);
-      toast.error('Failed to enhance resume. Please try again.', { id: 'enhancing' });
+      const message = error instanceof Error ? error.message : 'Failed to enhance resume. Please try again.';
+      toast.error(message, { id: 'enhancing' });
     } finally {
       setIsGenerating(false);
     }
